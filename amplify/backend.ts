@@ -17,16 +17,20 @@ backend.addOutput({
         aws_region: 'eu-central-1',
         bucket_name: 'hart-eu',
         name: 'hart-eu',
-        policy: {
-          Version: '2012-10-17',
-          Statement: [
-            {
-              Effect: 'Allow',
-              Principal: '*',
-              Action: 's3:GetObject',
-              Resource: 'arn:aws:s3:::hart-eu/*'
-            }
-          ]
+        paths: {
+          // 公开路径：允许所有用户（包括未认证用户）读写
+          'public/*': {
+            guest: ['read', 'write'],       // 未认证用户可读写
+            authenticated: ['read', 'write'] // 已认证用户可读写
+          },
+          // 保留其他路径的原有配置（如果需要）
+          'protected/{entity_id}/*': {
+            authenticated: ['read', 'write'],
+            entityidentity: ['read', 'write']
+          },
+          'private/{entity_id}/*': {
+            entityidentity: ['read', 'write']
+          }
         }
       }
     ]
