@@ -7,7 +7,7 @@ backend:
          # 安装AWS CDK（确保流水线环境有CDK）
         - npm install -g aws-cdk
         # 执行CDK引导（使用流水线当前账号和区域）
-        - cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION
+        - cdk bootstrap aws://898545663137/eu-central-1
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
   phases:
